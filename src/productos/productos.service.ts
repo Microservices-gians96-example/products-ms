@@ -21,13 +21,13 @@ export class ProductosService extends PrismaClient implements OnModuleInit {
 
   async findAll(paginationDto: PaginationDto) {
     const { page, limit } = paginationDto;
-    const totalPage = await this.producto.count({where: {available: true}});
+    const totalPage = await this.producto.count({ where: { available: true } });
     const lastPage = Math.ceil(totalPage / limit);
     return {
       data: await this.producto.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        where:{
+        where: {
           available: true,
         }
       }),
@@ -52,13 +52,13 @@ export class ProductosService extends PrismaClient implements OnModuleInit {
   }
 
   async update(id: number, updateProductoDto: UpdateProductoDto) {
+
+    const { id: _, ...data } = updateProductoDto;
     await this.findOne(id)
 
     return this.producto.update({
-      where: {
-        id,
-      },
-      data: updateProductoDto,
+      where: { id },
+      data: data,
     });
   }
 
