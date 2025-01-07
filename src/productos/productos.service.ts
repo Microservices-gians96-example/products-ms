@@ -1,8 +1,9 @@
-import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { PrismaClient } from '@prisma/client';
 import { PaginationDto } from 'src/common';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class ProductosService extends PrismaClient implements OnModuleInit {
@@ -46,7 +47,12 @@ export class ProductosService extends PrismaClient implements OnModuleInit {
         available: true,
       },
     });
-    if (!producto) { throw new NotFoundException(`producto ${id} not found`); }
+    if (!producto) {
+      throw new RpcException({
+        message: `producto ${id} not found`,
+        statusCode: HttpStatus.BAD_REQUEST
+      });
+    }
 
     return producto
   }

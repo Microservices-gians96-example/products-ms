@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, ParseIntPipe } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
@@ -43,7 +43,7 @@ export class ProductosController {
   @MessagePattern({ cmd: 'delete_producto' })
   remove(
     // @Param('id', ParseIntPipe) id: number
-@Payload('id', ParseIntPipe) id: number
+    @Payload('id', ParseIntPipe) id: number
   ) {
     return this.productosService.remove(id);
   }
