@@ -47,4 +47,9 @@ export class ProductosController {
   ) {
     return this.productosService.remove(id);
   }
+
+  @MessagePattern({ cmd: 'validate_products' })
+  validateProducts(@Payload() ids: number[]) {
+    return this.productosService.validateProducts(ids);
+  }
 }
